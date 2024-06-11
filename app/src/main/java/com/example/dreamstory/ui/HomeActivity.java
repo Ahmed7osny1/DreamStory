@@ -23,6 +23,10 @@ import com.example.dreamstory.data.Story;
 import com.example.dreamstory.databinding.ActivityHomeBinding;
 import com.example.dreamstory.dp.storyViewModel;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -35,6 +39,8 @@ public class HomeActivity extends AppCompatActivity {
     storyViewModel mStoryViewModel;
     StoryAdapter adapter;
     SharedPreferences sp;
+    SharedPreferences.Editor edt;
+    String jsonStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +50,22 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         mStoryViewModel = new ViewModelProvider(this).get(storyViewModel.class);
-        adapter = new StoryAdapter(new ArrayList<>(),mStoryViewModel);
+
+
+        adapter = new StoryAdapter(HomeActivity.this,
+                new ArrayList<>(),mStoryViewModel);
         binding.recPost.setAdapter(adapter);
         binding.recPost.setLayoutManager(new LinearLayoutManager(this));
+
+        sp = getSharedPreferences("Login", MODE_PRIVATE);
+        binding.nameTxt.setText(sp.getString("UserName",""));
+
+        edt = sp.edit();
+
+        if(!sp.getBoolean("dataFetched", false)) {
+            parseJSON();
+        }
+
 
         mStoryViewModel.selectAllStory().observe(this,
                 new Observer<List<Story>>() {
@@ -55,11 +74,6 @@ public class HomeActivity extends AppCompatActivity {
                         adapter.setStorys(stories);
                     }
                 });
-
-
-        sp = getSharedPreferences("Login", MODE_PRIVATE);
-
-        binding.nameTxt.setText(sp.getString("UserName",""));
 
         ActivityResultLauncher<Intent> arl = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -84,11 +98,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-    public String readJSON(Context context) {
+    public String readJSON() {
         String json = null;
 
         try {
-            InputStream is = context.getResources().openRawResource(R.raw.cis);
+            InputStream is = this.getResources().openRawResource(R.raw.cis);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -101,7 +115,54 @@ public class HomeActivity extends AppCompatActivity {
         return json;
     }
 
+    public void parseJSON () {
 
+        edt.putBoolean("dataFetched",true);
+        edt.apply();
+
+        jsonStr = readJSON();
+
+        if (jsonStr != null) {
+            try {
+                JSONArray cis = new JSONArray(jsonStr);
+                for (int i = 0; i < cis.length(); i++) {
+                    JSONObject c = cis.getJSONObject(i);
+
+                    String title = c.getString("title");
+                    String originLabel = c.getJSONObject("origin").getString("label");
+                    String date = c.getString("created");
+                    String textStory = c.getJSONObject("textStory").getString("story");
+                    String location = c.getJSONObject("location").getJSONObject("country").getString("label");
+                    String language = c.getJSONObject("textStory").getJSONArray("languages").getJSONObject(0).getString("label");
+                    JSONObject authorGender = c.getJSONObject("textStory").getJSONObject("author");
+                    String authorID;
+                    if (authorGender.isNull("gender")) {
+                        authorID = "NOT FOUND";
+                    } else {
+                        authorID = authorGender.getJSONObject("gender").getString("id");
+                    }
+
+
+                    Story storyData = new Story(
+                            title,
+                            originLabel,
+                            date,
+                            textStory,
+                            language,
+                            authorID,
+                            location,
+                            "0",
+                            "0"
+                    );
+
+                    mStoryViewModel.insertStory(storyData);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 }

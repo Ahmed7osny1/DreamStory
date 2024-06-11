@@ -1,6 +1,7 @@
 package com.example.dreamstory.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dreamstory.R;
@@ -25,9 +28,14 @@ public class StoryAdapter extends RecyclerView.
         Adapter<StoryAdapter.viewHolder> {
 
     private List<Story> storys;
+    private Context context;
+    storyViewModel mStoryViewModel;
     private storyViewModel mViewModel;
 
-    public StoryAdapter(List<Story> storys, storyViewModel mViewModel) {
+    public StoryAdapter(Context context,
+                        List<Story> storys,
+                        storyViewModel mViewModel) {
+        this.context = context;
         this.storys = storys;
         this.mViewModel = mViewModel;
     }
@@ -63,11 +71,14 @@ public class StoryAdapter extends RecyclerView.
         holder.favBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mStoryViewModel = new ViewModelProvider(
+                        (ViewModelStoreOwner) context).get(storyViewModel.class);
                 if (Objects.equals(mStory.getFavStatus(), "0")) {
-
+                    mStoryViewModel.updateStory(mStory.getId());
                     holder.favBtn.setImageResource(R.drawable.ic_fav_red);
                 }
                 else {
+                    mStoryViewModel.updateStoryNotFav(mStory.getId());
                     holder.favBtn.setImageResource(R.drawable.ic_fav);
                 }
             }

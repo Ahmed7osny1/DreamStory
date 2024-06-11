@@ -74,6 +74,16 @@ public class AddPostActivity extends AppCompatActivity {
             }
         });
 
+        binding.backPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddPostActivity.this,
+                        HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
     }
 

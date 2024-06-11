@@ -14,18 +14,20 @@ public interface storyDao {
 
     @Query("update story set favStatus = 1 where id =:id")
     void updateStory(int id);
+    @Query("update story set favStatus = 0 where id =:id")
+    void updateStoryNotFav(int id);
 
     @Query("delete from story where id =:id")
-    void deleteStory(int id);
+    void deleteStory(int id); // Story User Added
 
     @Query("select * from story")
     LiveData<List<Story>> selectAllStory();
 
-    @Query("select * from story where favStatus =:favStatus")
-    LiveData<List<Story>> selectFavStory(String favStatus);
+    @Query("select * from story where favStatus = 1")
+    LiveData<List<Story>> selectFavStory();
 
-    @Query("select * from story where storyStatus =:storyStatus")
-    LiveData<List<Story>> selectMyStory(String storyStatus);
+    @Query("select * from story where storyStatus = 1")
+    LiveData<List<Story>> selectMyStory();
 
     @Query("select * from story where originLabel =:originLabel")
     LiveData<List<Story>> selectOriginLabelStory(String originLabel);

@@ -26,6 +26,10 @@ public class storyViewModel extends AndroidViewModel {
         mRepository.updateStory(id);
     }
 
+    public void updateStoryNotFav(int id){
+        mRepository.updateStoryNotFav(id);
+    }
+
     public void deleteStory(int id){
         mRepository.deleteStory(id);
     }
@@ -34,12 +38,12 @@ public class storyViewModel extends AndroidViewModel {
         return mRepository.selectAllStory();
     }
 
-    public LiveData<List<Story>> selectFavStory(String favStatus){
-        return mRepository.selectFavStory(favStatus);
+    public LiveData<List<Story>> selectFavStory(){
+        return mRepository.selectFavStory();
     }
 
-    public LiveData<List<Story>> selectMyStory(String storyStatus){
-        return mRepository.selectMyStory(storyStatus);
+    public LiveData<List<Story>> selectMyStory(){
+        return mRepository.selectMyStory();
     }
 
     public LiveData<List<Story>> selectOriginLabelStory(String originLabel){
