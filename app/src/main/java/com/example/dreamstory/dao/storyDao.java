@@ -17,9 +17,6 @@ public interface storyDao {
     @Query("update story set favStatus = 0 where id =:id")
     void updateStoryNotFav(int id);
 
-    @Query("delete from story where id =:id")
-    void deleteStory(int id); // Story User Added
-
     @Query("select * from story")
     LiveData<List<Story>> selectAllStory();
 
@@ -28,8 +25,5 @@ public interface storyDao {
 
     @Query("select * from story where storyStatus = 1")
     LiveData<List<Story>> selectMyStory();
-
-    @Query("select * from story where originLabel =:originLabel")
-    LiveData<List<Story>> selectOriginLabelStory(String originLabel);
 
 }

@@ -13,10 +13,10 @@
         android:theme="@style/Theme.DreamStory"
         tools:targetApi="31">
         <activity
-            android:name=".ui.OnboardingActivity"
+            android:name=".ui.ShowMyPostsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.DetailsActivity"
+            android:name=".ui.OnboardingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.AddPostActivity"
@@ -26,9 +26,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".ui.LoginActivity"

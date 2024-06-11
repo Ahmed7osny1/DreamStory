@@ -1,15 +1,25 @@
 package com.example.dreamstory.ui;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.dreamstory.data.Story;
 import com.example.dreamstory.databinding.FragmentPersonBinding;
 
 public class PersonFragment extends Fragment {
@@ -42,11 +52,18 @@ public class PersonFragment extends Fragment {
         binding.yourPassword.setText(prefs.getString("Password", ""));
         binding.yourPhone.setText(prefs.getString("Phone", ""));
 
-        binding.addPost.setOnClickListener(new View.OnClickListener() {
+        ActivityResultLauncher<Intent> arl = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult o) { }
+                }
+        );
+        binding.showMyPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddPostActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getActivity(), ShowMyPostsActivity.class);
+                arl.launch(intent);
             }
         });
 

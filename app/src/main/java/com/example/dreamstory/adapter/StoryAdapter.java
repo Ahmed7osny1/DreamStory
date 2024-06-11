@@ -74,6 +74,7 @@ public class StoryAdapter extends RecyclerView.
             }
         });
 
+
     }
 
     @Override
@@ -93,6 +94,7 @@ public class StoryAdapter extends RecyclerView.
             storyLocation = v.findViewById(R.id.storyLocation);
             storyLanguage = v.findViewById(R.id.storyLanguage);
             favBtn = v.findViewById(R.id.favBtn);
+
         }
 
     }

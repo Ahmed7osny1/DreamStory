@@ -1,6 +1,7 @@
 package com.example.dreamstory.ui;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -69,7 +70,7 @@ public class AddPostActivity extends AppCompatActivity {
                 );
                 Intent intent = new Intent();
                 intent.putExtra("postValue", story);
-                setResult(RESULT_OK, intent);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
             }
         });
@@ -77,9 +78,10 @@ public class AddPostActivity extends AppCompatActivity {
         binding.backPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddPostActivity.this,
-                        HomeFragment.class);
-                startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra("postValue", new Story());
+                setResult(Activity.RESULT_OK, intent);
+                finish();
                 finish();
             }
         });

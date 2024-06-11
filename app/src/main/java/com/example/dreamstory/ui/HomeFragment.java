@@ -91,6 +91,8 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
+
+
         ActivityResultLauncher<Intent> arl = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -99,7 +101,8 @@ public class HomeFragment extends Fragment {
                         if(o.getResultCode() == RESULT_OK && o.getData() != null){
                             Story story = (Story) o.getData().
                                     getSerializableExtra("postValue");
-                            mStoryViewModel.insertStory(story);
+                            if(story.getTextStory() != null)
+                                mStoryViewModel.insertStory(story);
                         }
                     }
                 }

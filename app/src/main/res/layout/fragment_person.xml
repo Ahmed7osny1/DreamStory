@@ -178,7 +178,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/addPost"
+        android:id="@+id/showMyPost"
         android:layout_width="340dp"
         android:layout_height="48dp"
         android:layout_gravity="center"

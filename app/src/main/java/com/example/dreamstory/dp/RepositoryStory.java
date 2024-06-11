@@ -42,15 +42,6 @@ public class RepositoryStory {
         });
     }
 
-    public void deleteStory(int id){
-        StoryRoomDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                mStoryDao.deleteStory(id);
-            }
-        });
-    }
-
     public LiveData<List<Story>> selectAllStory(){
         return mStoryDao.selectAllStory();
     }
@@ -61,10 +52,6 @@ public class RepositoryStory {
 
     public LiveData<List<Story>> selectMyStory(){
         return mStoryDao.selectMyStory();
-    }
-
-    public LiveData<List<Story>> selectOriginLabelStory(String originLabel){
-        return mStoryDao.selectOriginLabelStory(originLabel);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.dreamstory;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.activity.EdgeToEdge;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     MenuItem prevMenuItem;
+    SharedPreferences sp;
+    SharedPreferences.Editor edt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        sp = getSharedPreferences("Login", MODE_PRIVATE);
+        edt = sp.edit();
 
         binding.navigation.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -41,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
                         else if (item.getItemId() == R.id.profile)
                             binding.viewpager.setCurrentItem(2);
                         else if (item.getItemId() == R.id.logout) {
+
+                            edt.putBoolean("logined",false);
+                            edt.commit();
 
                             Intent intent = new Intent(MainActivity.this,
                                     SplashActivity.class);
