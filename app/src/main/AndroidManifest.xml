@@ -13,6 +13,15 @@
         android:theme="@style/Theme.DreamStory"
         tools:targetApi="31">
         <activity
+            android:name=".ui.OnboardingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.DetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.AddPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ForgetPasswordActivity"
             android:exported="false" />
         <activity

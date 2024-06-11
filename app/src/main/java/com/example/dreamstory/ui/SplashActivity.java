@@ -34,11 +34,11 @@ public class SplashActivity extends AppCompatActivity {
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        sp = getSharedPreferences("Login",MODE_PRIVATE);
+        sp = getSharedPreferences("Login", MODE_PRIVATE);
         edt = sp.edit();
 
-        topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
-        bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
+        topAnim = AnimationUtils.loadAnimation(this, R.anim.top_animation);
+        bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
 
 
         binding.splashImage.setAnimation(topAnim);
@@ -48,13 +48,21 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent;
-                if(sp.getBoolean("logined",false)){
+                if (sp.getBoolean("isOnboardingOpened", false)) {
+
+                    if (sp.getBoolean("logined", false)) {
+                        intent = new Intent(SplashActivity.this,
+                                HomeActivity.class);
+                    } else {
+                        intent = new Intent(SplashActivity.this,
+                                LoginActivity.class);
+                    }
+
+                } else {
                     intent = new Intent(SplashActivity.this,
-                            HomeActivity.class);
-                }else {
-                    intent = new Intent(SplashActivity.this,
-                            LoginActivity.class);
+                            OnboardingActivity.class);
                 }
+
                 startActivity(intent);
                 finish();
             }
