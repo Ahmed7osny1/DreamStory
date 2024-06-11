@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.FavouriteFragment">
+
+
+    <ImageView
+        android:id="@+id/emptyImg"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="267dp"
+        android:layout_marginEnd="136dp"
+        android:layout_marginBottom="314dp"
+        android:src="@drawable/empty" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recPostFav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:padding="10dp" />
+
+
+</RelativeLayout>

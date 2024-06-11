@@ -103,7 +103,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public static int generateCustomUserId(Context context) {
-        String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        String androidId = Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
         if (androidId == null || androidId.isEmpty()) {
             // Generate a fallback ID if ANDROID_ID is not available
             androidId = UUID.randomUUID().toString();

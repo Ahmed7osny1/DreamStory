@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dreamstory.MainActivity;
 import com.example.dreamstory.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
@@ -104,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
             edt.apply();
 
             Intent intent = new Intent(LoginActivity.this,
-                    HomeActivity.class);
+                    MainActivity.class);
             startActivity(intent);
             finish();
 

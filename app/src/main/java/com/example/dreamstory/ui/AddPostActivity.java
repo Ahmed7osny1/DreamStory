@@ -78,7 +78,7 @@ public class AddPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AddPostActivity.this,
-                        HomeActivity.class);
+                        HomeFragment.class);
                 startActivity(intent);
                 finish();
             }
@@ -98,7 +98,7 @@ public class AddPostActivity extends AppCompatActivity {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
-                        binding.date.setText(day + "-" + (month + 1) + "-" + year);
+                        binding.date.setText(day + "/" + (month + 1) + "/" + year);
                     }
                 }, year, month, day);
         //currentTimeMillis

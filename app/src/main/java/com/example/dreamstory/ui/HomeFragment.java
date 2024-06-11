@@ -1,26 +1,31 @@
 package com.example.dreamstory.ui;
 
-import android.content.Context;
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import com.example.dreamstory.R;
 import com.example.dreamstory.adapter.StoryAdapter;
 import com.example.dreamstory.data.Story;
-import com.example.dreamstory.databinding.ActivityHomeBinding;
+import com.example.dreamstory.databinding.FragmentHomeBinding;
 import com.example.dreamstory.dp.storyViewModel;
 
 import org.json.JSONArray;
@@ -33,31 +38,42 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeFragment extends Fragment {
 
-    private ActivityHomeBinding binding;
-    storyViewModel mStoryViewModel;
-    StoryAdapter adapter;
+    FragmentHomeBinding binding;
+    private storyViewModel mStoryViewModel;
+    private StoryAdapter adapter;
     SharedPreferences sp;
     SharedPreferences.Editor edt;
     String jsonStr;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+
+        // Create Shared Preferences
+        sp = this.requireActivity()
+                .getSharedPreferences("Login", MODE_PRIVATE);
+        edt = sp.edit();
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mStoryViewModel = new ViewModelProvider(this).get(storyViewModel.class);
 
 
-        adapter = new StoryAdapter(HomeActivity.this,
-                new ArrayList<>(),mStoryViewModel);
+        adapter = new StoryAdapter(getContext(),
+                new ArrayList<>());
         binding.recPost.setAdapter(adapter);
-        binding.recPost.setLayoutManager(new LinearLayoutManager(this));
+        binding.recPost.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        sp = getSharedPreferences("Login", MODE_PRIVATE);
+
         binding.nameTxt.setText(sp.getString("UserName",""));
 
         edt = sp.edit();
@@ -67,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
-        mStoryViewModel.selectAllStory().observe(this,
+        mStoryViewModel.selectAllStory().observe((LifecycleOwner) requireContext(),
                 new Observer<List<Story>>() {
                     @Override
                     public void onChanged(List<Story> stories) {
@@ -80,24 +96,25 @@ public class HomeActivity extends AppCompatActivity {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult o) {
-                            if(o.getResultCode() == RESULT_OK && o.getData() != null){
-                                Story story = (Story) o.getData().
-                                        getSerializableExtra("postValue");
-                                mStoryViewModel.insertStory(story);
-                            }
+                        if(o.getResultCode() == RESULT_OK && o.getData() != null){
+                            Story story = (Story) o.getData().
+                                    getSerializableExtra("postValue");
+                            mStoryViewModel.insertStory(story);
+                        }
                     }
                 }
         );
         binding.addPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this,
+                Intent intent = new Intent(getActivity(),
                         AddPostActivity.class);
 
                 arl.launch(intent);
             }
         });
     }
+
     public String readJSON() {
         String json = null;
 

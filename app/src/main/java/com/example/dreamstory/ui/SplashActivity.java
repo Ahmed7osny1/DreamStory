@@ -15,6 +15,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.dreamstory.MainActivity;
 import com.example.dreamstory.R;
 import com.example.dreamstory.databinding.ActivitySplashBinding;
 
@@ -52,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     if (sp.getBoolean("logined", false)) {
                         intent = new Intent(SplashActivity.this,
-                                HomeActivity.class);
+                                MainActivity.class);
                     } else {
                         intent = new Intent(SplashActivity.this,
                                 LoginActivity.class);

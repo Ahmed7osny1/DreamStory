@@ -2,25 +2,18 @@ package com.example.dreamstory.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.dreamstory.R;
 import com.example.dreamstory.data.Story;
-import com.example.dreamstory.databinding.ActivityHomeBinding;
 import com.example.dreamstory.dp.storyViewModel;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -28,20 +21,13 @@ public class StoryAdapter extends RecyclerView.
         Adapter<StoryAdapter.viewHolder> {
 
     private List<Story> storys;
-    private Context context;
+    private final Context context;
     storyViewModel mStoryViewModel;
-    private storyViewModel mViewModel;
 
     public StoryAdapter(Context context,
-                        List<Story> storys,
-                        storyViewModel mViewModel) {
+                        List<Story> storys) {
         this.context = context;
         this.storys = storys;
-        this.mViewModel = mViewModel;
-    }
-
-    public List<Story> getStorys() {
-        return storys;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -67,6 +53,10 @@ public class StoryAdapter extends RecyclerView.
         holder.storyReflection.setText(mStory.getTextStory());
         holder.storyLocation.setText(mStory.getLocation());
         holder.storyLanguage.setText(mStory.getLanguage());
+
+        if(Objects.equals(mStory.getFavStatus(), "1"))
+            holder.favBtn.setImageResource(R.drawable.ic_fav_red);
+        else holder.favBtn.setImageResource(R.drawable.ic_fav);
 
         holder.favBtn.setOnClickListener(new View.OnClickListener() {
             @Override

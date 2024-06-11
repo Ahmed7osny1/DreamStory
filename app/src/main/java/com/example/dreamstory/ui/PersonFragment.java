@@ -37,10 +37,10 @@ public class PersonFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        binding.yourName.setText(prefs.getString("name", ""));
-        binding.yourEmail.setText(prefs.getString("email", ""));
-        binding.yourPassword.setText(prefs.getString("password", ""));
-        binding.yourPhone.setText(prefs.getString("phone", ""));
+        binding.yourName.setText(prefs.getString("UserName", ""));
+        binding.yourEmail.setText(prefs.getString("Email", ""));
+        binding.yourPassword.setText(prefs.getString("Password", ""));
+        binding.yourPhone.setText(prefs.getString("Phone", ""));
 
         binding.addPost.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -45,6 +45,7 @@ dependencies {
 
     // Room Dependency
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.swiperefreshlayout)
     annotationProcessor(libs.room.compiler)
 
     testImplementation(libs.junit)
