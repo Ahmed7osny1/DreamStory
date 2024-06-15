@@ -5,16 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.dreamstory.MainActivity;
 import com.example.dreamstory.R;
 import com.example.dreamstory.adapter.OnBoardingAdapter;
 import com.example.dreamstory.data.OnboardingItem;
 import com.example.dreamstory.databinding.ActivityOnboardingBinding;
 import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +21,6 @@ public class OnboardingActivity extends AppCompatActivity {
     int position = 0;
     Animation btnAnim;
     ActivityOnboardingBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +104,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 //open main activity
 
                 Intent mainActivity = new Intent(getApplicationContext(),
-                        LoginActivity.class);
+                        MainActivity.class);
                 startActivity(mainActivity);
                 savePrefsData();
                 finish();

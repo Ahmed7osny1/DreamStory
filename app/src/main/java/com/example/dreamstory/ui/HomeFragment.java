@@ -3,6 +3,7 @@ package com.example.dreamstory.ui;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.example.dreamstory.R;
 import com.example.dreamstory.adapter.StoryAdapter;
 import com.example.dreamstory.data.Story;
@@ -43,6 +45,8 @@ public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
     private storyViewModel mStoryViewModel;
     private StoryAdapter adapter;
+    private LinearLayoutManager linearLayoutManager;
+    private Boolean isReverse = false;
     SharedPreferences sp;
     SharedPreferences.Editor edt;
     String jsonStr;
@@ -69,16 +73,22 @@ public class HomeFragment extends Fragment {
 
 
         adapter = new StoryAdapter(getContext(),
-                new ArrayList<>());
+                new ArrayList<>(),this::onItemClicked);
         binding.recPost.setAdapter(adapter);
-        binding.recPost.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        binding.sorting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-
-        binding.nameTxt.setText(sp.getString("UserName",""));
+                adapter.ReversePosts();
+                binding.recPost.setAdapter(adapter);
+            }
+        });
+        binding.recPost.setLayoutManager(linearLayoutManager);
 
         edt = sp.edit();
 
-        if(!sp.getBoolean("dataFetched", false)) {
+        if (!sp.getBoolean("dataFetched", false)) {
             parseJSON();
         }
 
@@ -92,21 +102,19 @@ public class HomeFragment extends Fragment {
                 });
 
 
-
         ActivityResultLauncher<Intent> arl = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult o) {
-                        if(o.getResultCode() == RESULT_OK && o.getData() != null){
+                        if (o.getResultCode() == RESULT_OK && o.getData() != null) {
                             Story story = (Story) o.getData().
                                     getSerializableExtra("postValue");
-                            if(story.getTextStory() != null)
+                            if (story.getTextStory() != null)
                                 mStoryViewModel.insertStory(story);
                         }
                     }
-                }
-        );
+                });
         binding.addPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +124,15 @@ public class HomeFragment extends Fragment {
                 arl.launch(intent);
             }
         });
+
+
+    }
+
+    private void onItemClicked(Story story) {
+
+        Intent intent = new Intent(getActivity(),DetailsActivity.class);
+        intent.putExtra("story", story);
+        startActivity(intent);
     }
 
     public String readJSON() {
@@ -135,9 +152,9 @@ public class HomeFragment extends Fragment {
         return json;
     }
 
-    public void parseJSON () {
+    public void parseJSON() {
 
-        edt.putBoolean("dataFetched",true);
+        edt.putBoolean("dataFetched", true);
         edt.apply();
 
         jsonStr = readJSON();

@@ -23,7 +23,6 @@ public class SplashActivity extends AppCompatActivity {
 
 
     Animation topAnim, bottomAnim;
-
     private ActivitySplashBinding binding;
     SharedPreferences sp;
     SharedPreferences.Editor edt;
@@ -50,15 +49,8 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 Intent intent;
                 if (sp.getBoolean("isOnboardingOpened", false)) {
-
-                    if (sp.getBoolean("logined", false)) {
-                        intent = new Intent(SplashActivity.this,
-                                MainActivity.class);
-                    } else {
-                        intent = new Intent(SplashActivity.this,
-                                LoginActivity.class);
-                    }
-
+                    intent = new Intent(SplashActivity.this,
+                            MainActivity.class);
                 } else {
                     intent = new Intent(SplashActivity.this,
                             OnboardingActivity.class);

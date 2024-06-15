@@ -25,7 +25,6 @@ import java.util.Objects;
 public class AddPostActivity extends AppCompatActivity {
 
     ActivityAddPostBinding binding;
-    SharedPreferences sp;
     String Title, originLabel, date, textStory, language, location;
 
     @Override
@@ -35,8 +34,6 @@ public class AddPostActivity extends AppCompatActivity {
 
         binding = ActivityAddPostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        sp = getSharedPreferences("Login", MODE_PRIVATE);
 
         binding.date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +60,7 @@ public class AddPostActivity extends AppCompatActivity {
                         date,
                         textStory,
                         language,
-                        String.valueOf(sp.getInt("UserId", 0)),
+                        "123456",
                         location,
                         "0",
                         "1"
@@ -81,7 +78,6 @@ public class AddPostActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("postValue", new Story());
                 setResult(Activity.RESULT_OK, intent);
-                finish();
                 finish();
             }
         });

@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dreamstory.R;
 import com.example.dreamstory.data.Story;
 import com.example.dreamstory.dp.storyViewModel;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,18 +25,25 @@ public class StoryAdapter extends RecyclerView.
 
     private List<Story> storys;
     private final Context context;
+    private final viewHolder.OnItemClickListener listener;
     storyViewModel mStoryViewModel;
 
     public StoryAdapter(Context context,
-                        List<Story> storys) {
+                        List<Story> storys,
+                        viewHolder.OnItemClickListener listener) {
         this.context = context;
         this.storys = storys;
+        this.listener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void setStorys(List<Story> storys) {
         this.storys = storys;
         notifyDataSetChanged();
+    }
+
+    public void ReversePosts(){
+        Collections.reverse(storys);
     }
 
     @NonNull
@@ -74,6 +84,7 @@ public class StoryAdapter extends RecyclerView.
             }
         });
 
+        holder.itemView.setOnClickListener(v -> listener.onItemClicked(mStory));
 
     }
 
@@ -95,6 +106,10 @@ public class StoryAdapter extends RecyclerView.
             storyLanguage = v.findViewById(R.id.storyLanguage);
             favBtn = v.findViewById(R.id.favBtn);
 
+        }
+
+        public interface OnItemClickListener {
+            void onItemClicked(Story mStory);
         }
 
     }

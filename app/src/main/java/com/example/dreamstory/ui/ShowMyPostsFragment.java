@@ -2,6 +2,7 @@ package com.example.dreamstory.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -9,27 +10,31 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.dreamstory.R;
 import com.example.dreamstory.adapter.StoryAdapter;
 import com.example.dreamstory.data.Story;
-import com.example.dreamstory.databinding.FragmentFavouriteBinding;
+import com.example.dreamstory.databinding.FragmentShowMyPostsBinding;
 import com.example.dreamstory.dp.storyViewModel;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class FavouriteFragment extends Fragment {
+public class ShowMyPostsFragment extends Fragment {
 
-    FragmentFavouriteBinding binding;
+    FragmentShowMyPostsBinding binding;
     private StoryAdapter adapter;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentFavouriteBinding.inflate(inflater, container, false);
-
+        binding = FragmentShowMyPostsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -37,26 +42,26 @@ public class FavouriteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        storyViewModel mStoryViewModel = new ViewModelProvider(this).get(storyViewModel.class);
-
+        storyViewModel mStoryViewModel = new ViewModelProvider(this)
+                .get(storyViewModel.class);
 
         adapter = new StoryAdapter(getContext(),
                 new ArrayList<>(),this::onItemClicked);
-        binding.recPostFav.setAdapter(adapter);
-        binding.recPostFav.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recMyPost.setAdapter(adapter);
+        binding.recMyPost.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        mStoryViewModel.selectFavStory().observe((LifecycleOwner) requireActivity(),
+        mStoryViewModel.selectMyStory().observe((LifecycleOwner) requireContext(),
                 new Observer<List<Story>>() {
                     @Override
                     public void onChanged(List<Story> stories) {
                         if (!stories.isEmpty()) {
                             binding.emptyImg.setVisibility(View.INVISIBLE);
-                            binding.recPostFav.setVisibility(View.VISIBLE);
+                            binding.recMyPost.setVisibility(View.VISIBLE);
                             adapter.setStorys(stories);
-                        }else{
+                        } else {
                             binding.emptyImg.setVisibility(View.VISIBLE);
-                            binding.recPostFav.setVisibility(View.INVISIBLE);
+                            binding.recMyPost.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
